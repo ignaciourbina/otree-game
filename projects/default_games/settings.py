@@ -98,6 +98,24 @@ SESSION_CONFIGS = [
         app_sequence=['coordination'],
     ),
     dict(
+        name='prisoner',
+        display_name="Prisoner's Dilemma",
+        num_demo_participants=2,
+        app_sequence=['prisoner'],
+    ),
+    dict(
+        name='stag_hunt',
+        display_name='Stag Hunt',
+        num_demo_participants=2,
+        app_sequence=['stag_hunt'],
+    ),
+    dict(
+        name='bertrand_competition',
+        display_name='Bertrand Competition',
+        num_demo_participants=2,
+        app_sequence=['bertrand_competition'],
+    ),
+    dict(
         name='survey',
         display_name='Survey',
         num_demo_participants=1,

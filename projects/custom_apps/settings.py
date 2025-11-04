@@ -13,6 +13,12 @@ SESSION_CONFIGS = [
         num_demo_participants=1,
         app_sequence=['projects.custom_apps.apps.survey'],
     ),
+    dict(
+        name='ai_growth_risk',
+        display_name='AI Growth vs Risk (Jones 2023)',
+        num_demo_participants=2,
+        app_sequence=['projects.custom_apps.apps.ai_growth_risk'],
+    ),
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
