@@ -1,0 +1,45 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Choose a deployment plan{% endblock %}
+
+{% block content %}
+<p class="text-muted">Current scenario: {{ scenario_label }}</p>
+<p>
+    Select the deployment plan you prefer. Remember that the implemented runtime is the
+    average of both partners' plans and your tokens follow the research team's conversion
+    rule described earlier.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="list-group mb-3">
+        {% for option in options %}
+        <label class="list-group-item d-flex align-items-start">
+            <span class="form-check me-3 mt-2">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="runtime_choice"
+                    value="{{ option.id }}"
+                    {% if option.id == current_choice %}checked{% endif %}
+                    required
+                >
+            </span>
+            <span>
+                <strong>{{ option.label }}</strong>
+                <span class="badge bg-secondary ms-2">{{ option.runtime|floatformat:1 }} years</span>
+                <div class="small text-muted">Token preview (if matched): {{ option.token_preview|floatformat:1 }}</div>
+                {% if option.description %}
+                <div class="mt-1">{{ option.description }}</div>
+                {% endif %}
+            </span>
+        </label>
+        {% endfor %}
+    </div>
+
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary">Submit plan</button>
+    </div>
+</form>
+{% endblock %}

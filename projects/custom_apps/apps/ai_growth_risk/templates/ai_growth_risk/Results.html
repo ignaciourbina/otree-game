@@ -1,0 +1,70 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Round summary{% endblock %}
+
+{% block content %}
+<p class="text-muted">Scenario: {{ scenario_label }}</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Token outcomes</div>
+            <div class="card-body">
+                <p class="display-6 mb-3">You earned {{ player_tokens|floatformat:1 }} tokens</p>
+                <ul class="mb-2">
+                    <li>Your plan: {{ player_label }} ({{ player_runtime_years|floatformat:1 }} years).</li>
+                    <li>Partner plan: {{ partner_label }} ({{ partner_runtime_years|floatformat:1 }} years).</li>
+                    <li>Implemented runtime (average): {{ collective_runtime|floatformat:1 }} years.</li>
+                </ul>
+                <p class="small text-muted mb-0">
+                    Tokens already account for the researchers' conversion from the
+                    theoretical model. These will be converted into cash at the end of the
+                    session.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Partner information</div>
+            <div class="card-body">
+                <p class="mb-2">Your partner earned {{ partner_tokens|floatformat:1 }} tokens.</p>
+                <p class="mb-0">Benchmark runtime predicted by the model: {{ benchmark_runtime|floatformat:1 }} years.</p>
+                <p class="small text-muted mb-0">Deviation from benchmark: {{ runtime_gap|floatformat:2 }} years.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">Research diagnostics (not shown to participants in the lab manual)</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="text-uppercase text-muted">Economic quantities</h6>
+                <ul>
+                    <li>Consumption if successful: {{ collective_consumption|floatformat:2 }}</li>
+                    <li>Survival probability: {{ collective_survival_prob|floatformat:3 }}</li>
+                    <li>Extinction probability: {{ collective_extinction_prob|floatformat:3 }}</li>
+                    <li>Expected utility: {{ collective_expected_utility|floatformat:3 }}</li>
+                    <li>Tokens from your outcome: {{ collective_tokens|floatformat:1 }}</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-uppercase text-muted">Model benchmark</h6>
+                <ul>
+                    <li>Optimal consumption: {{ optimal_consumption|floatformat:2 }}</li>
+                    <li>Optimal survival probability: {{ optimal_survival_prob|floatformat:3 }}</li>
+                    <li>Optimal extinction probability: {{ optimal_extinction_prob|floatformat:3 }}</li>
+                    <li>Optimal expected utility: {{ optimal_expected_utility|floatformat:3 }}</li>
+                    <li>Tokens if benchmark achieved: {{ optimal_tokens|floatformat:1 }}</li>
+                </ul>
+            </div>
+        </div>
+        <p class="small text-muted mb-0">
+            These logs allow structural estimation of the model primitives once the
+            experiment concludes.
+        </p>
+    </div>
+</div>
+{% endblock %}
