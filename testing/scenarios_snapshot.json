@@ -1,0 +1,137 @@
+[
+  {
+    "code": "baseline",
+    "label": "Balanced benchmark",
+    "base_params": {
+      "c0": 1.0,
+      "g": 0.1,
+      "delta_": 0.01,
+      "gamma": 2.0,
+      "target_v": 6.0
+    },
+    "optimal_runtime": 4.519851237430572,
+    "bounded_optimal_runtime": 4.519851237430572,
+    "runtime_menu": [
+      {
+        "id": "conservative",
+        "label": "Safety First",
+        "runtime": 4.0,
+        "survival_prob": 0.9607894391523232,
+        "extinction_prob": 0.03921056084767682,
+        "expected_utility": 6.08148965298312,
+        "token_preview": 31.027284689330237
+      },
+      {
+        "id": "balanced",
+        "label": "Balanced Benchmark",
+        "runtime": 8.0,
+        "survival_prob": 0.9231163463866358,
+        "extinction_prob": 0.07688365361336424,
+        "expected_utility": 6.047031513024869,
+        "token_preview": 25.858563695592576
+      },
+      {
+        "id": "ambitious",
+        "label": "Growth Push",
+        "runtime": 12.0,
+        "survival_prob": 0.8869204367171575,
+        "extinction_prob": 0.11307956328284252,
+        "expected_utility": 5.941307755054252,
+        "token_preview": 10.0
+      }
+    ],
+    "token_floor": 10.0,
+    "token_scale": 150.0,
+    "optimal_tokens": 31.165754474046405
+  },
+  {
+    "code": "growth_tilt",
+    "label": "High growth environment",
+    "base_params": {
+      "c0": 1.0,
+      "g": 0.13,
+      "delta_": 0.01,
+      "gamma": 2.0,
+      "target_v": 6.5
+    },
+    "optimal_runtime": 4.801186992869183,
+    "bounded_optimal_runtime": 4.801186992869183,
+    "runtime_menu": [
+      {
+        "id": "rapid",
+        "label": "Rapid Shutdown",
+        "runtime": 4.0,
+        "survival_prob": 0.9607894391523232,
+        "extinction_prob": 0.03921056084767682,
+        "expected_utility": 6.634711729793609,
+        "token_preview": 50.86134163577768
+      },
+      {
+        "id": "extended",
+        "label": "Extended Deployment",
+        "runtime": 10.0,
+        "survival_prob": 0.9048374180359595,
+        "extinction_prob": 0.09516258196404048,
+        "expected_utility": 6.53968367132809,
+        "token_preview": 35.656852281294675
+      },
+      {
+        "id": "maximal",
+        "label": "Maximal Run",
+        "runtime": 14.0,
+        "survival_prob": 0.8693582353988059,
+        "extinction_prob": 0.13064176460119414,
+        "expected_utility": 6.379328344569998,
+        "token_preview": 10.0
+      }
+    ],
+    "token_floor": 10.0,
+    "token_scale": 160.0,
+    "optimal_tokens": 51.358221070743184
+  },
+  {
+    "code": "risk_tilt",
+    "label": "High risk environment",
+    "base_params": {
+      "c0": 1.0,
+      "g": 0.09,
+      "delta_": 0.02,
+      "gamma": 2.0,
+      "target_v": 5.5
+    },
+    "optimal_runtime": -1.8561564962574006,
+    "bounded_optimal_runtime": 3.0,
+    "runtime_menu": [
+      {
+        "id": "safest",
+        "label": "Early Shutdown",
+        "runtime": 3.0,
+        "survival_prob": 0.9417645335842487,
+        "extinction_prob": 0.05823546641575128,
+        "expected_utility": 5.402545734865691,
+        "token_preview": 58.28124724002551
+      },
+      {
+        "id": "middle",
+        "label": "Moderate Run",
+        "runtime": 6.0,
+        "survival_prob": 0.8869204367171575,
+        "extinction_prob": 0.11307956328284252,
+        "expected_utility": 5.248131504169824,
+        "token_preview": 36.66325494260414
+      },
+      {
+        "id": "bold",
+        "label": "Bold Run",
+        "runtime": 9.0,
+        "survival_prob": 0.835270211411272,
+        "extinction_prob": 0.164729788588728,
+        "expected_utility": 5.057679683151223,
+        "token_preview": 10.0
+      }
+    ],
+    "token_floor": 10.0,
+    "token_scale": 140.0,
+    "optimal_tokens": 74.62960345933004
+  }
+]
