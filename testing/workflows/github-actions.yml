@@ -1,0 +1,33 @@
+name: ai-growth-risk-bots
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'projects/custom_apps/apps/ai_growth_risk/**'
+      - 'testing/**'
+
+jobs:
+  run-bots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        - name: Stress test ai_growth_risk bots
+          env:
+            OTREE_SETTINGS_MODULE: testing.settings_bots
+          run: |
+            python testing/run_ai_growth_risk_bots.py --iterations 3 --participants 12 --random-seed-base 4242 --export-dir testing/output
+      - name: Upload bot logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-growth-risk-bot-output
+          path: testing/output
+          if-no-files-found: ignore

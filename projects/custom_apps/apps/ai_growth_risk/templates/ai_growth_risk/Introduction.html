@@ -1,0 +1,71 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}AI Deployment Planning{% endblock %}
+
+{% block content %}
+<p>
+    You and another participant oversee when to wind down an advanced AI project. A longer
+    deployment delivers more growth tokens but exposes the lab to a higher chance of a
+    catastrophic failure that wipes out all gains. Each of you will secretly select one of
+    the prepared deployment plans. The group outcome uses the average of your two plans.
+</p>
+
+<div class="card mb-3">
+    <div class="card-header">
+        Token schedule prepared by the researchers
+        <span class="text-muted">({{ scenario_label }})</span>
+    </div>
+    <div class="card-body">
+        <p class="mb-2">
+            The table below translates each plan into the number of incentive tokens you
+            would earn <strong>if both partners picked the same plan</strong>. Token values
+            are pre-computed from the theoretical model so that choices aligning with the
+            predicted optimum yield the highest payoffs on average.
+        </p>
+        <div class="table-responsive">
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>Plan</th>
+                        <th>Years online</th>
+                        <th>Token preview*</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for option in options %}
+                    <tr>
+                        <td><strong>{{ option.label }}</strong></td>
+                        <td>{{ option.runtime|floatformat:1 }}</td>
+                        <td>{{ option.token_preview|floatformat:1 }}</td>
+                        <td>{{ option.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="small text-muted mt-2 mb-0">
+            *Actual tokens depend on the average of both plans. This preview shows what you
+            would earn if you and your partner selected the same option.
+        </p>
+    </div>
+</div>
+
+<p>
+    The benchmark predicted by the research model keeps the system online for about
+    {{ benchmark_runtime|floatformat:1 }} years and awards roughly
+    {{ benchmark_tokens|floatformat:1 }} tokens when partners coordinate on that plan.
+    You are free to choose any plan in the next screen.
+</p>
+
+<div class="alert alert-info" role="alert">
+    Your experimental earnings convert directly from tokens using the exchange rate shown
+    in the lab instructions. Think carefully about how your choice interacts with your
+    partner's decision.
+</div>
+
+<div class="text-end">
+    {% next_button %}
+</div>
+{% endblock %}

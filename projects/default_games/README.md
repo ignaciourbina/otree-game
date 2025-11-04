@@ -10,6 +10,7 @@ otree devserver
 ```
 
 The session configuration enumerates the standard demo apps such as Public
-Goods, Trust, Dictator, Cournot Competition, and more. The actual app modules
-are provided by the `otree` package and will be accessible after installing the
-dependencies listed in the repository `requirements.txt` file.
+Goods, Trust, Dictator, Cournot Competition, Prisoner's Dilemma, Stag Hunt,
+Bertrand Competition, and more. The actual app modules are provided by the
+`otree` package and will be accessible after installing the dependencies listed
+in the repository `requirements.txt` file.

@@ -1,1 +1,1 @@
-"""Package containing locally cloned oTree apps."""
+"""Package containing locally cloned and bespoke oTree apps."""
