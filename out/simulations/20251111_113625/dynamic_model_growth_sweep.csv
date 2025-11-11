@@ -1,0 +1,13 @@
+run_id,experiment,model,baseline_c0,baseline_N0,baseline_gamma,baseline_rho_minus_b,baseline_g0,baseline_m0,target_v,m_ai_for_sweep,g_ai,m_ai,delta_star
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.02,0.0075,0.1294642857142856
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.04,0.0075,0.15056818181818177
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.06,0.0075,0.16041666666666665
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.08,0.0075,0.16611842105263142
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.1,0.0075,0.16983695652173902
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.12,0.0075,0.1724537037037036
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.14,0.0075,0.1743951612903225
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.16,0.0075,0.17589285714285696
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.18,0.0075,0.17708333333333326
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.2,0.0075,0.17805232558139528
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.25,0.0075,0.1798349056603773
+20251111_113625,dynamic_model_growth_sweep,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.3,0.0075,0.1810515873015871

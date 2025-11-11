@@ -11,10 +11,11 @@ Run the experiments with the default parameter grids::
 
     python -m simulations.runner
 
-The command produces a timestamped directory inside ``simulations/data``
-containing one CSV file per experiment.  Use ``--output-dir`` to change
-where results are written and ``--tag`` to append a custom label to the
-run identifier.
+The command produces a timestamped directory inside ``out/simulations``
+containing one CSV file per experiment plus companion PNG plots.  Use
+``--output-dir`` to change where results are written, ``--tag`` to append
+a custom label to the run identifier, and ``--skip-plots`` to suppress
+figure generation.
 """
 
 from __future__ import annotations
@@ -24,7 +25,7 @@ import csv
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, Sequence
+from typing import Dict, Iterable, List, Mapping, Optional, Sequence
 
 from formal_model.jones_models import (
     DynamicAIGrowthRiskModel,
@@ -154,14 +155,75 @@ def _augment_rows(
     return augmented
 
 
+_PYPLOT = None
+
+
+def _lazy_import_pyplot():
+    """Import matplotlib lazily to avoid forcing the dependency when unused."""
+
+    global _PYPLOT
+    if _PYPLOT is None:
+        try:
+            import matplotlib
+
+            matplotlib.use("Agg", force=True)
+            import matplotlib.pyplot as plt
+        except ImportError as exc:  # pragma: no cover - dependency sanity
+            raise RuntimeError(
+                "Matplotlib is required to generate plots. Install it or pass --skip-plots."
+            ) from exc
+        _PYPLOT = plt
+    return _PYPLOT
+
+
+def _plot_line_chart(
+    rows: Sequence[Mapping[str, object]],
+    *,
+    x_key: str,
+    y_key: str,
+    title: str,
+    x_label: str,
+    y_label: str,
+    output_path: Path,
+) -> Path:
+    """Render a simple line chart for the provided dataset."""
+
+    if not rows:
+        raise ValueError("Cannot plot an empty dataset.")
+
+    plt = _lazy_import_pyplot()
+    xs = [float(row[x_key]) for row in rows]
+    ys = [float(row[y_key]) for row in rows]
+
+    fig, ax = plt.subplots()
+    ax.plot(xs, ys, marker="o")
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.6)
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=200)
+    plt.close(fig)
+    return output_path
+
+
+@dataclass
+class ExperimentArtifact:
+    """Container for experiment outputs."""
+
+    csv_path: Path
+    plot_path: Optional[Path] = None
+
+
 # ---------------------------------------------------------------------------
 # Experiment implementations
 # ---------------------------------------------------------------------------
 
 
 def _run_simple_model_delta_sweep(
-    output_dir: Path, run_id: str, config: SimpleModelConfig
-) -> Path:
+    output_dir: Path, run_id: str, config: SimpleModelConfig, make_plots: bool
+) -> ExperimentArtifact:
     model = SimpleAIGrowthRiskModel(
         c0=config.c0,
         g=config.g,
@@ -182,12 +244,23 @@ def _run_simple_model_delta_sweep(
     rows = _augment_rows(model.comparative_statics_over_delta(config.delta_grid), metadata)
     output_path = output_dir / "simple_model_delta_sweep.csv"
     _write_csv(output_path, rows)
-    return output_path
+    plot_path = None
+    if make_plots:
+        plot_path = _plot_line_chart(
+            rows,
+            x_key="delta",
+            y_key="extinction_prob",
+            title="Simple model: extinction probability vs flow risk",
+            x_label="flow existential risk δ",
+            y_label="overall extinction probability 1 - e^{-δ T*}",
+            output_path=output_dir / "simple_model_delta_sweep.png",
+        )
+    return ExperimentArtifact(csv_path=output_path, plot_path=plot_path)
 
 
 def _run_simple_model_growth_sweep(
-    output_dir: Path, run_id: str, config: SimpleModelConfig
-) -> Path:
+    output_dir: Path, run_id: str, config: SimpleModelConfig, make_plots: bool
+) -> ExperimentArtifact:
     model = SimpleAIGrowthRiskModel(
         c0=config.c0,
         g=config.g,
@@ -208,12 +281,23 @@ def _run_simple_model_growth_sweep(
     rows = _augment_rows(model.comparative_statics_over_g(config.growth_grid), metadata)
     output_path = output_dir / "simple_model_growth_sweep.csv"
     _write_csv(output_path, rows)
-    return output_path
+    plot_path = None
+    if make_plots:
+        plot_path = _plot_line_chart(
+            rows,
+            x_key="g",
+            y_key="extinction_prob",
+            title="Simple model: extinction probability vs AI-driven growth",
+            x_label="AI-boosted growth rate g",
+            y_label="overall extinction probability 1 - e^{-δ T*}",
+            output_path=output_dir / "simple_model_growth_sweep.png",
+        )
+    return ExperimentArtifact(csv_path=output_path, plot_path=plot_path)
 
 
 def _run_dynamic_model_mortality_sweep(
-    output_dir: Path, run_id: str, config: DynamicModelConfig
-) -> Path:
+    output_dir: Path, run_id: str, config: DynamicModelConfig, make_plots: bool
+) -> ExperimentArtifact:
     model = DynamicAIGrowthRiskModel(
         c0=config.c0,
         N0=config.N0,
@@ -241,12 +325,25 @@ def _run_dynamic_model_mortality_sweep(
     )
     output_path = output_dir / "dynamic_model_mortality_sweep.csv"
     _write_csv(output_path, rows)
-    return output_path
+    plot_path = None
+    if make_plots:
+        g_for_label = float(rows[0]["g_ai_for_sweep"])
+        title = f"Dynamic model: δ* vs mortality (g_ai={g_for_label:.3f})"
+        plot_path = _plot_line_chart(
+            rows,
+            x_key="m_ai",
+            y_key="delta_star",
+            title=title,
+            x_label="AI mortality shift m_ai",
+            y_label="max acceptable one-time risk δ*",
+            output_path=output_dir / "dynamic_model_mortality_sweep.png",
+        )
+    return ExperimentArtifact(csv_path=output_path, plot_path=plot_path)
 
 
 def _run_dynamic_model_growth_sweep(
-    output_dir: Path, run_id: str, config: DynamicModelConfig
-) -> Path:
+    output_dir: Path, run_id: str, config: DynamicModelConfig, make_plots: bool
+) -> ExperimentArtifact:
     model = DynamicAIGrowthRiskModel(
         c0=config.c0,
         N0=config.N0,
@@ -274,12 +371,25 @@ def _run_dynamic_model_growth_sweep(
     )
     output_path = output_dir / "dynamic_model_growth_sweep.csv"
     _write_csv(output_path, rows)
-    return output_path
+    plot_path = None
+    if make_plots:
+        m_for_label = float(rows[0]["m_ai_for_sweep"])
+        title = f"Dynamic model: δ* vs growth (m_ai={m_for_label:.4f})"
+        plot_path = _plot_line_chart(
+            rows,
+            x_key="g_ai",
+            y_key="delta_star",
+            title=title,
+            x_label="AI growth g_ai",
+            y_label="max acceptable one-time risk δ*",
+            output_path=output_dir / "dynamic_model_growth_sweep.png",
+        )
+    return ExperimentArtifact(csv_path=output_path, plot_path=plot_path)
 
 
 def _run_dynamic_model_singularity_limit(
-    output_dir: Path, run_id: str, config: DynamicModelConfig
-) -> Path:
+    output_dir: Path, run_id: str, config: DynamicModelConfig, make_plots: bool
+) -> ExperimentArtifact:
     model = DynamicAIGrowthRiskModel(
         c0=config.c0,
         N0=config.N0,
@@ -307,7 +417,18 @@ def _run_dynamic_model_singularity_limit(
     rows = _augment_rows(rows, metadata)
     output_path = output_dir / "dynamic_model_singularity_limit.csv"
     _write_csv(output_path, rows)
-    return output_path
+    plot_path = None
+    if make_plots:
+        plot_path = _plot_line_chart(
+            rows,
+            x_key="m_ai",
+            y_key="delta_star",
+            title="Dynamic model: singularity limit δ* vs mortality",
+            x_label="AI mortality shift m_ai",
+            y_label="max acceptable one-time risk δ*",
+            output_path=output_dir / "dynamic_model_singularity_limit.png",
+        )
+    return ExperimentArtifact(csv_path=output_path, plot_path=plot_path)
 
 
 # ---------------------------------------------------------------------------
@@ -315,8 +436,10 @@ def _run_dynamic_model_singularity_limit(
 # ---------------------------------------------------------------------------
 
 
-def run_all_experiments(output_dir: Path, run_id: str | None = None) -> List[Path]:
-    """Execute all configured experiments and return generated file paths."""
+def run_all_experiments(
+    output_dir: Path, run_id: str | None = None, make_plots: bool = True
+) -> List[ExperimentArtifact]:
+    """Execute all configured experiments and return generated artifacts."""
 
     run_identifier = run_id or datetime.now().strftime("%Y%m%d_%H%M%S")
     experiment_dir = output_dir / run_identifier
@@ -326,12 +449,20 @@ def run_all_experiments(output_dir: Path, run_id: str | None = None) -> List[Pat
     dynamic_config = DynamicModelConfig()
 
     generated_files = [
-        _run_simple_model_delta_sweep(experiment_dir, run_identifier, simple_config),
-        _run_simple_model_growth_sweep(experiment_dir, run_identifier, simple_config),
-        _run_dynamic_model_mortality_sweep(experiment_dir, run_identifier, dynamic_config),
-        _run_dynamic_model_growth_sweep(experiment_dir, run_identifier, dynamic_config),
+        _run_simple_model_delta_sweep(
+            experiment_dir, run_identifier, simple_config, make_plots
+        ),
+        _run_simple_model_growth_sweep(
+            experiment_dir, run_identifier, simple_config, make_plots
+        ),
+        _run_dynamic_model_mortality_sweep(
+            experiment_dir, run_identifier, dynamic_config, make_plots
+        ),
+        _run_dynamic_model_growth_sweep(
+            experiment_dir, run_identifier, dynamic_config, make_plots
+        ),
         _run_dynamic_model_singularity_limit(
-            experiment_dir, run_identifier, dynamic_config
+            experiment_dir, run_identifier, dynamic_config, make_plots
         ),
     ]
 
@@ -348,8 +479,13 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path(__file__).resolve().parent / "data",
-        help="Directory where experiment outputs will be stored.",
+        default=Path(__file__).resolve().parent.parent / "out" / "simulations",
+        help="Directory where experiment outputs will be stored (default: out/simulations).",
+    )
+    parser.add_argument(
+        "--skip-plots",
+        action="store_true",
+        help="Skip Matplotlib plot generation and only emit CSV datasets.",
     )
     parser.add_argument(
         "--tag",
@@ -366,11 +502,23 @@ def main() -> None:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     run_id = f"{timestamp}_{args.tag}" if args.tag else timestamp
 
-    generated_files = run_all_experiments(args.output_dir, run_id=run_id)
+    generated_files = run_all_experiments(
+        args.output_dir, run_id=run_id, make_plots=not args.skip_plots
+    )
 
-    print("Generated the following datasets:")
-    for path in generated_files:
-        print(f" - {path.relative_to(path.parent.parent)}")
+    print("Generated datasets:")
+    for artifact in generated_files:
+        try:
+            csv_rel = artifact.csv_path.relative_to(args.output_dir)
+        except ValueError:
+            csv_rel = artifact.csv_path
+        print(f" - {csv_rel}")
+        if artifact.plot_path:
+            try:
+                plot_rel = artifact.plot_path.relative_to(args.output_dir)
+            except ValueError:
+                plot_rel = artifact.plot_path
+            print(f"   plot -> {plot_rel}")
 
 
 if __name__ == "__main__":

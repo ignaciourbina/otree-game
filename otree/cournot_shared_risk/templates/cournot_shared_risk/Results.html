@@ -1,0 +1,62 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Round {{ round_number }} Results{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-header">Environment recap</div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Treatment</dt>
+            <dd class="col-sm-9">{{ treatment.label }}</dd>
+            <dt class="col-sm-3">Hazard curvature \(\kappa\)</dt>
+            <dd class="col-sm-9">{{ treatment.kappa }}</dd>
+            <dt class="col-sm-3">Weights \((\omega_1, \omega_2)\)</dt>
+            <dd class="col-sm-9">{{ treatment.omega.0 }}, {{ treatment.omega.1 }}</dd>
+            <dt class="col-sm-3">Growth rates \((g_1, g_2)\)</dt>
+            <dd class="col-sm-9">{{ treatment.g.0 }}, {{ treatment.g.1 }}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">Your outcome</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tbody>
+                        <tr><th scope="row">Your runtime</th><td>{{ runtime|floatformat:2 }}</td></tr>
+                        <tr><th scope="row">Partner runtime</th><td>{{ partner_runtime|floatformat:2 }}</td></tr>
+                        <tr><th scope="row">Survival probability</th><td>{{ survival|floatformat:3 }}</td></tr>
+                        <tr><th scope="row">Consumption</th><td>{{ consumption|floatformat:2 }}</td></tr>
+                        <tr><th scope="row">Expected utility</th><td>{{ expected_utility|floatformat:3 }}</td></tr>
+                        <tr class="table-success"><th scope="row">Tokens earned</th><td>{{ payoff|floatformat:1 }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">What to take away</div>
+            <div class="card-body">
+                <ul class="mb-3">
+                    <li>Tokens rise when survival stays high <em>and</em> consumption grows.</li>
+                    <li>Both runtimes feed the hazard, so even cautious choices can suffer when partners extend the run.</li>
+                    <li>The next round will draw a fresh partner and treatment arm—plan accordingly.</li>
+                </ul>
+                <div class="alert alert-info mb-0" role="alert">
+                    Keep notes on how different environments affect the best response. You may spot patterns that
+                    improve your earnings over time.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-end mt-4">
+    {% next_button %}
+</div>
+{% endblock %}

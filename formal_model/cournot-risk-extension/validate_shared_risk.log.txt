@@ -1,0 +1,19 @@
+[ok] dW/dT_1 reproduces the FOC structure
+[ok] Value-of-life form (eq. 1) holds for player 1
+Player 1 value-of-life term u/(u'c): (c01*exp(T1*g1))**(gamma1 - 1)*(ubar1*(gamma1 - 1) - (c01*exp(T1*g1))**(1 - gamma1))/(gamma1 - 1)
+Player 1 hazard-scaled growth term: g1/(delta*w1*Subs(Derivative(H(_xi), _xi), _xi, T1*w1 + T2*w2))
+[ok] dW/dT_2 reproduces the FOC structure
+[ok] Value-of-life form (eq. 1) holds for player 2
+Player 2 value-of-life term u/(u'c): (c02*exp(T2*g2))**(gamma2 - 1)*(ubar2*(gamma2 - 1) - (c02*exp(T2*g2))**(1 - gamma2))/(gamma2 - 1)
+Player 2 hazard-scaled growth term: g2/(delta*w2*Subs(Derivative(H(_xi), _xi), _xi, T1*w1 + T2*w2))
+[ok] CRRA best-response inversion (eq. 5.1) base
+CRRA optimal consumption c*: ((g*gamma - g + h_eff)/(h_eff*ubar*(gamma - 1)))**(1/(gamma - 1))
+[ok] Log-utility best response (eq. 5.2)
+Log-utility optimal consumption c*: exp((g - h_eff*ubar)/h_eff)
+[ok] Consumption-to-runtime mapping (eq. 2)
+Runtime mapping T(c*): (-log(c0_sym) + log(c_star_sym))/g_runtime
+[ok] Symmetric hazard condition (eq. 3)
+Symmetric Cournot RHS expression: g_common/(delta*(2*T_equil*kappa + 1))
+
+All symbolic checks passed.
+Log saved to /home/ignacio/Dropbox/Workbench/research-projects/game-ai-risk/formal_model/cournot-risk-extension/validate_shared_risk.log.txt

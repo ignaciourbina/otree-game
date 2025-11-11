@@ -1,0 +1,91 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Welcome to the Cournot Shared-Risk Lab{% endblock %}
+
+{% block content %}
+<p class="lead">
+    In each round you and one other participant simultaneously choose how long to run
+    your AI system. Longer runtimes deliver higher consumption but raise the shared
+    hazard that wipes out both groups. Pairings change every round and you will not meet
+    the same partner twice during the session.
+</p>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">Fixed primitives</div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>Baseline consumption \(c_0 = {{ fixed.c0 }}\)</li>
+                    <li>Baseline hazard \(\delta = {{ fixed.delta }}\)</li>
+                    <li>CRRA curvature \(\gamma = {{ fixed.gamma }}\)</li>
+                    <li>Token mapping: floor {{ fixed.token_floor }}, scale {{ fixed.token_scale }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">Session logistics</div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>{{ num_rounds }} rounds total</li>
+                    <li>Fresh partner each round (round-robin schedule)</li>
+                    <li>Treatments reshuffled every round at the pair level</li>
+                    <li>Tokens convert to cash using the posted exchange rate</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Potential treatment environments</div>
+    <div class="card-body">
+        <p class="mb-2">
+            Before each round the software draws one of the following environments for
+            your pair. The draw changes both the hazard curvature and how each player's
+            runtime contributes to the shared risk.
+        </p>
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>\(\kappa\)</th>
+                        <th>\(\omega_1, \omega_2\)</th>
+                        <th>Growth rates \(g_1, g_2\)</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for arm in treatments %}
+                    <tr>
+                        <td><strong>{{ arm.label }}</strong></td>
+                        <td>{{ arm.kappa }}</td>
+                        <td>{{ arm.omega.0 }}, {{ arm.omega.1 }}</td>
+                        <td>{{ arm.g.0 }}, {{ arm.g.1 }}</td>
+                        <td>{{ arm.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="small text-muted mt-2 mb-0">
+            We announce the realised environment on the decision page every round so you
+            can tailor your runtime choice accordingly.
+        </p>
+    </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+    Your payoff each round equals survival probability times utility from
+    consumption, converted into tokens. Because survival depends on <em>both</em> choices,
+    think strategically about how your runtime affects the shared hazard.
+</div>
+
+<div class="text-end">
+    {% next_button %}
+</div>
+{% endblock %}

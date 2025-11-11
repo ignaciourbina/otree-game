@@ -1,0 +1,11 @@
+run_id,experiment,model,baseline_c0,baseline_N0,baseline_gamma,baseline_rho_minus_b,baseline_g0,baseline_m0,target_v,m_ai,delta_star
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0,0.5357142857142857
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0025,0.4196428571428571
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.005,0.3035714285714286
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.0075,0.1874999999999999
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.01,0.0714285714285714
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.015,-0.1607142857142858
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.02,-0.3928571428571428
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.03,-0.8571428571428572
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.04,-1.3214285714285716
+20251111_113625,dynamic_model_singularity_limit,DynamicAIGrowthRiskModel,1.0,1.0,2.0,0.01,0.02,0.01,6.0,0.05,-1.785714285714286

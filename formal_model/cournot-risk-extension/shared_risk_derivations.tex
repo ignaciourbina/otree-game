@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+\section*{Automated Cournot Shared-Risk Derivations}
+\subsection*{Model Primitives}
+We mirror the primitives in the main note, now rendered symbolically:
+\begin{itemize}
+\item \textbf{Players}: two agents $i \in \{1,2\}$ simultaneously choose runtimes $T_i \ge 0$ for their AI systems.
+\item \textbf{Technology}: deterministic consumption scales with runtime via
+\begin{equation}
+c_i(T_i) = c_{0,i} e^{T_{i} g_{i}}
+\end{equation}
+unlocking exponential growth at rate $g_i$ from baseline $c_{0,i}$.
+\item \textbf{Preferences}: CRRA utility with bounded shift provides a tractable value-of-life concept:
+\begin{equation}
+u_i(c) = \frac{\bar{u}_i \left(\gamma_{i} - 1\right) - c_{i}^{1 - \gamma_{i}}}{\gamma_{i} - 1}
+\end{equation}
+\item \textbf{Risk Aggregation}: runtimes feed a convex global hazard $H(Q)$ with weights $\omega_i$,
+\begin{equation}
+S(T_1,T_2) = e^{-\delta H(Q)}, \quad Q = \omega_1 T_1 + \omega_2 T_2.
+\end{equation}
+\end{itemize}
+\subsection*{Optimization Problem}
+Each agent solves a single-variable calculus problem treating $T_j$ as fixed:
+\begin{equation}
+\max_{T_i \ge 0} \; W_i(T_i,T_j) = \frac{\left(\bar{u}_i \left(\gamma_{i} - 1\right) - \left(c_{0,i} e^{T_{i} g_{i}}\right)^{1 - \gamma_{i}}\right) e^{- \delta H{\left(Q \right)}}}{\gamma_{i} - 1}
+\end{equation}
+subject to the implicit dependence of $Q$ on both runtimes. SymPy keeps the best-response perspective by leaving $T_j$ symbolic.
+\subsection*{Analytical Strategy}
+The symbolic pipeline mirrors the hand derivation, but each step is now automated:
+\begin{enumerate}
+\item \textbf{Embed technology in preferences}: Substitute $c_i(T_i)$ into $u_i(c)$ so that welfare carries runtime explicitly.
+\item \textbf{Differentiate welfare}: Form $W_i(T_i,T_j)=S(T_i,T_j)u_i(c_i(T_i))$ and take $\partial W_i/\partial T_i$.
+\item \textbf{Normalize the FOC}: Divide by $S u'_i(c_i)c_i$ to isolate the value-of-life ratio $v_i(c_i)=u_i/(u'_i c_i)$.
+\item \textbf{Solve for best responses}: Invert the value-of-life condition under CRRA and logarithmic utility assumptions.
+\item \textbf{Map back to runtimes}: Convert $c_i^\star$ into $T_i^\star$ through the exponential technology and inspect symmetric Cournot equilibria.
+\end{enumerate}
+\subsection*{Expected Welfare Derivative}
+Executing Steps 1--2 yields a FOC whose two terms cleanly separate the marginal survival cost and consumption benefit:
+\begin{equation}
+\frac{\partial W_i}{\partial T_i} = \frac{\left(- \delta \omega_{i} \left(\bar{u}_i \left(\gamma_{i} - 1\right) - \left(c_{0,i} e^{T_{i} g_{i}}\right)^{1 - \gamma_{i}}\right) \frac{d}{d Q} H{\left(Q \right)} + g_{i} \left(c_{0,i} e^{T_{i} g_{i}}\right)^{1 - \gamma_{i}} \left(\gamma_{i} - 1\right)\right) e^{- \delta H{\left(Q \right)}}}{\gamma_{i} - 1}
+\end{equation}
+To make the comparison explicit, recall that SymPy computes
+\begin{equation}
+u'_i(c_i)c_i = \left(c_{0,i} e^{T_{i} g_{i}}\right)^{1 - \gamma_{i}}
+\end{equation}
+The first component $\propto -\delta \omega_i H'(Q)$ discounts utility by the incremental hazard, while the second captures direct consumption gains $\propto g_i u'_i(c_i)c_i$.
+\subsection*{Value-of-Life Condition}
+Step 3 divides the FOC by the positive term $S u'_i(c_i)c_i$, transforming it into the Cournot-style value-of-life balance:
+\begin{equation}
+v_i(c_i) = \frac{c_{i}^{\gamma_{i} - 1} \left(\bar{u}_i \left(\gamma_{i} - 1\right) - c_{i}^{1 - \gamma_{i}}\right)}{\gamma_{i} - 1} = \frac{g_{i}}{\delta \omega_{i} \frac{d}{d Q} H{\left(Q \right)}}
+\end{equation}
+The left-hand side $v_i(c_i)$ encodes preferences only, while the right-hand side shows how growth benefits are scaled down by endogenous hazard $\delta \omega_i H'(Q)$.
+\subsection*{Closed-Form Best Responses}
+Steps 4--5 invert the condition for the two canonical preference cases.
+\paragraph{CRRA ($\gamma_i \neq 1$).}
+Solving $v_i(c_i^\star)=g_i/(\delta \omega_i H'(Q))$ produces
+\begin{equation}
+c_i^\star(T_j) = \left(\frac{\delta \omega_{i} \frac{d}{d Q} H{\left(Q \right)} + \gamma_{i} g_{i} - g_{i}}{\bar{u}_i \delta \omega_{i} \left(\gamma_{i} - 1\right) \frac{d}{d Q} H{\left(Q \right)}}\right)^{\frac{1}{\gamma_{i} - 1}}
+\end{equation}
+which reduces to the single-agent solution when $H'(Q)$ is constant.
+\paragraph{Log utility ($\gamma_i = 1$).}
+With $\gamma_i=1$, SymPy recovers the exponential best response
+\begin{equation}
+c_i^\star(T_j) = e^{- \bar{u}_i + \frac{g_{i}}{\delta \omega_{i} \frac{d}{d Q} H{\left(Q \right)}}}
+\end{equation}
+\subsection*{Back-Substituting for Runtime}
+Substituting $c_i^\star$ into $c_{0,i}e^{g_i T_i}$ reintroduces runtimes, turning consumption best responses into reaction functions:
+\begin{equation}
+T_i^\star(T_j) = \frac{\log{\left(c^{\star}_{i} \right)} - \log{\left(c_{0,i} \right)}}{g_{i}}
+\end{equation}
+\subsection*{Symmetric Cournot Hazard Example}
+To illustrate Step 5, we specialize to $H(Q)=Q+\frac{\kappa}{2}Q^2$, yielding
+\begin{equation}
+H(Q) = \frac{Q \left(Q \kappa + 2\right)}{2}, \quad H'(Q) = Q \kappa + 1
+\end{equation}
+Evaluating at the symmetric profile $Q=2T$ recovers the textbook Cournot attenuation of marginal benefits:
+\begin{equation}
+v\!\left(c_0 e^{g T}\right) = \frac{g}{\delta \left(2 T \kappa + 1\right)}
+\end{equation}
+\end{document}

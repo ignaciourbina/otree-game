@@ -1,2 +1,7 @@
 otree
 flask
+matplotlib
+numpy
+pandas
+scipy
+sympy

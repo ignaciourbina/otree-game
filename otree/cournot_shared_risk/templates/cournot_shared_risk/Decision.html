@@ -1,0 +1,41 @@
+{% extends "otree/Page.html" %}
+{% load otree %}
+
+{% block title %}Round {{ round_number }}{% endblock %}
+
+{% block content %}
+<p>
+    The environment drawn for this round is <strong>{{ treatment.label }}</strong>.
+    In this environment, the shared hazard follows
+    \(H(Q) = Q + \tfrac{\kappa}{2}Q^2\) with \(\kappa = {{ treatment.kappa }}\),
+    and the weights on the aggregate runtime are \(\omega_1 = {{ treatment.omega.0 }}\),
+    \(\omega_2 = {{ treatment.omega.1 }}\).
+</p>
+
+<div class="card mb-4">
+    <div class="card-header">Runtime decision</div>
+    <div class="card-body">
+        <p class="mb-2">
+            Choose the number of years to operate your AI system. Your consumption grows at
+            rate \(g_i = {{ treatment.g.0 }}\) if you are Player 1 or \(g_i = {{ treatment.g.1 }}\)
+            if you are Player 2 (the lab will tell you your player number on-screen). Survival
+            equals \(\exp[-\delta H(Q)]\) with \(\delta = {{ fixed.delta|default:0.01 }}\), so longer
+            runtimes for either player raise the shared hazard.
+        </p>
+        <div class="mb-3">
+            {{ form.runtime_choice.label_tag }}
+            {{ form.runtime_choice }}
+            <div class="form-text">Admissible range: 0 to 20.</div>
+        </div>
+        <ul class="small mb-0">
+            <li>You submit your runtime simultaneously with your partner.</li>
+            <li>Payoffs convert expected utility into tokens after shifting by the lower outcome in the pair.</li>
+            <li>You will see both choices on the results screen.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="text-end">
+    {% next_button %}
+</div>
+{% endblock %}
