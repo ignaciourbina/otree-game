@@ -318,4 +318,4 @@ dict(
 
 - [First Experiment →](./first-experiment.md) — Run the session
 - [API Reference →](../api/cournot-shared-risk.md) — Code details
-- [Theory →](../theory/cournot-model.md) — Model background
+- [Shared Risk Model →](../../formal_model/cournot-risk-extension/Shared-Risk-Model.md) — Model background

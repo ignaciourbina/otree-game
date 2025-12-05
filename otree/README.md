@@ -1,29 +1,50 @@
-# Custom Apps Project
+# oTree Experiments
 
-This project provides local copies of the Public Goods and Survey apps so they
-can be customised independently of the templates bundled with the `otree`
-distribution. Both apps live inside the `apps/` package and are referenced by
-the project `settings.py` module using their fully-qualified module paths.
+This directory contains the oTree experiment applications for the AI Growth-Risk project.
 
-In addition, the project hosts a bespoke two-player `ai_growth_risk` app that
-translates the Jones (2023) AI growth–risk formal model into an experimental
-oTree game. Participants no longer manipulate the model primitives directly;
-instead, researchers curate a catalogue of deployment-plan scenarios (each
-mapping to a runtime in the formal model) and the incentive-compatible
-conversion from model utility into lab tokens. At session start the app
-randomly assigns each two-player group to one of these hard-coded scenarios,
-ensuring a between-subjects design without exposing a configuration UI.
-Players simply pick among the labelled plans and earn tokens based on the
-average runtime, while the app records the underlying consumption, risk, and
-utility outcomes for structural estimation.
-
-To run the project once the dependencies are available:
+## Running the Server
 
 ```bash
-source ../../.venv/bin/activate
-otree devserver --settings projects.custom_apps.settings
+cd otree
+otree devserver
+# Open http://localhost:8000
 ```
 
-Passing the settings module ensures oTree loads the configuration that points to
-these local clones. You can freely extend the game logic or pages within the app
-folders.
+## Available Apps
+
+| App | Description | Group Size |
+|-----|-------------|------------|
+| `cournot_shared_risk` | Two-player strategic AI deployment game based on Cournot extension of Jones (2023) | 2 |
+| `ai_growth_risk` | Single-player AI growth-risk tradeoff experiment | 1-2 |
+| `ai_growth_risk_bot` | Bot testing harness for ai_growth_risk | 2 |
+| `public_goods` | Classic public goods contribution game | N |
+| `survey` | Post-experiment questionnaire | 1 |
+
+## Key Files
+
+- `settings.py` — Session configurations and app registration
+- `_static/` — Shared static assets (CSS, JS, images)
+- Each app folder contains:
+  - `__init__.py` — Models, constants, and game logic
+  - `pages.py` — Page classes (if separated from models)
+  - `templates/` — HTML templates
+  - `tests.py` — App-specific tests
+
+## Session Configuration
+
+Edit `settings.py` to add or modify session configurations:
+
+```python
+SESSION_CONFIGS = [
+    dict(
+        name='cournot_shared_risk_lab',
+        display_name='Cournot Shared-Risk (6 rounds)',
+        num_demo_participants=6,
+        app_sequence=['cournot_shared_risk'],
+    ),
+]
+```
+
+## Documentation
+
+See [`docs/experiments/`](../docs/experiments/README.md) for detailed guides on running experiments.

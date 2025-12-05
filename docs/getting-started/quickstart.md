@@ -69,9 +69,9 @@ http://localhost:8000/demo
 | Task | Guide |
 |------|-------|
 | Configure a real lab session | [Running Experiments →](../experiments/first-experiment.md) |
-| Understand the formal model | [Theory Overview →](../theory/README.md) |
+| Understand the formal model | [Formal Model API →](../api/formal-model.md) |
 | Customize experiments | [API Reference →](../api/README.md) |
-| Run simulations | [Simulations Guide →](../experiments/simulations.md) |
+| Run simulations | [Simulations Guide →](../api/simulations.md) |
 
 ## Verify Everything Works
 

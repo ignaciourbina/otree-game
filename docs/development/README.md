@@ -9,7 +9,6 @@ This section covers development setup, contribution guidelines, and testing proc
 | [Development Setup](./setup.md) | Configure your development environment |
 | [Contributing](./contributing.md) | Contribution workflow and guidelines |
 | [Testing](./testing.md) | Run and write tests |
-| [Code Style](./code-style.md) | Formatting and style conventions |
 
 ## Development Workflow
 

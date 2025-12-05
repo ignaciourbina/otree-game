@@ -329,6 +329,6 @@ print(f"Maximum acceptable one-time risk: δ* = {delta_critical:.2%}")
 
 ## See Also
 
-- [Theory Documentation](../theory/README.md) — Mathematical derivations
+- [Model Primitives](../../MODEL_PRIMITIVES.md) — Mathematical derivations
 - [Simulations API](./simulations.md) — Batch experiment runner
 - [Cournot Shared Risk API](./cournot-shared-risk.md) — Multi-player extension

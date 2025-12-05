@@ -289,5 +289,5 @@ plt.savefig("custom_plot.png", dpi=150)
 ## See Also
 
 - [Formal Model API](./formal-model.md) — Underlying model classes
-- [Running Simulations Guide](../experiments/simulations.md) — Tutorial
+- [First Experiment Guide](../experiments/first-experiment.md) — Running experiments
 - [Architecture Overview](../architecture/README.md) — System design

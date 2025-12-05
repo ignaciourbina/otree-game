@@ -91,6 +91,5 @@ docs/
 ├── architecture/
 ├── api/
 ├── experiments/
-├── development/
-└── theory/
+└── development/
 ```

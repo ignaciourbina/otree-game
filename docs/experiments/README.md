@@ -7,10 +7,8 @@ This section provides step-by-step guides for running laboratory experiments usi
 | Guide | Description |
 |-------|-------------|
 | [First Experiment](./first-experiment.md) | Run your first lab session |
-| [Cournot Shared Risk](./cournot-experiment.md) | Two-player strategic experiment |
-| [Batch Simulations](./simulations.md) | Computational parameter sweeps |
 | [Session Configuration](./session-config.md) | Customize experiment parameters |
-| [Data Export](./data-export.md) | Extract and analyze results |
+| [Simulations](../api/simulations.md) | Batch simulation runner API |
 
 ## Experiment Overview
 
@@ -90,4 +88,3 @@ For publication-quality experiments, consider:
 
 - **[First Experiment →](./first-experiment.md)** — Detailed walkthrough
 - **[Session Configuration →](./session-config.md)** — Customize treatments
-- **[Data Export →](./data-export.md)** — Analysis workflow

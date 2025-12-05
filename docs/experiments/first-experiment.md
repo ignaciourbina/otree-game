@@ -201,5 +201,4 @@ plt.show()
 ## Next Steps
 
 - **[Session Configuration →](./session-config.md)** — Customize treatments
-- **[Data Export Guide →](./data-export.md)** — Advanced analysis
-- **[Cournot Theory →](../theory/cournot-model.md)** — Understand the model
+- **[Cournot Shared Risk API →](../api/cournot-shared-risk.md)** — Understand the model

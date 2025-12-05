@@ -8,7 +8,6 @@ This section provides detailed documentation for all modules in the oTree AI Gro
 |--------|-------------|---------------|
 | `formal_model.jones_models` | Jones (2023) model implementations | [API Reference →](./formal-model.md) |
 | `otree.cournot_shared_risk` | Two-player strategic experiment | [API Reference →](./cournot-shared-risk.md) |
-| `otree.ai_growth_risk` | Single-player growth-risk experiment | [API Reference →](./ai-growth-risk.md) |
 | `simulations.runner` | Batch simulation runner | [API Reference →](./simulations.md) |
 
 ## Quick Reference
@@ -98,6 +97,6 @@ Common exceptions and how to handle them:
 
 ## See Also
 
-- [Theory Documentation](../theory/README.md) - Mathematical foundations
+- [Model Primitives](../../MODEL_PRIMITIVES.md) - Mathematical foundations
 - [Architecture Overview](../architecture/README.md) - System design
 - [Development Guide](../development/README.md) - Contributing code

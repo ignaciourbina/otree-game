@@ -399,4 +399,4 @@ SESSION_CONFIGS = [
 
 - [Cournot Shared Risk Docs](../../otree/cournot_shared_risk/docs/README.md) — App documentation
 - [Shared Risk Model](../../formal_model/cournot-risk-extension/Shared-Risk-Model.md) — Theory
-- [Experiment Guide](../experiments/cournot-experiment.md) — Running sessions
+- [First Experiment Guide](../experiments/first-experiment.md) — Running sessions
